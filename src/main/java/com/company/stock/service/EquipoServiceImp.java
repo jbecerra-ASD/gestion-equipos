@@ -54,9 +54,14 @@ public class EquipoServiceImp implements EquipoService {
     public EquipoResponse actualizar(EquipoRequest equipoRequest) {
         if (equipoRequest.numSerial() == null) {
             throw new StockException("Debe indicar el serial del equipo");
+        } else {
+            getEquipo(equipoRequest.numSerial());
         }
-        Equipo equipoActual = getEquipo(equipoRequest.numSerial());
-        Equipo equipo = equipoMapper.mapToEntity(equipoRequest, equipoActual.getValorDepreciado());
+
+        double valorDepreciado = depreciacionUtil.calcularValorDepreciado(equipoRequest.valorCompra(),
+                equipoRequest.fechaCompra());
+
+        Equipo equipo = equipoMapper.mapToEntity(equipoRequest, valorDepreciado);
         equipoRepository.save(equipo);
         return equipoMapper.mapToEquipoResponse(equipo);
     }
