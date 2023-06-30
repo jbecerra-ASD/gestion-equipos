@@ -24,9 +24,8 @@ public class DepreciacionUtil {
      * Tarea programada encargada de actualizar el valor de los equipos de acuerdo
      * a la depreciacion anual, se ejecuta una vez al año cada primero de enero
      */
-    @Scheduled(cron = "00 */1 * * * *")
+    @Scheduled(cron = "00 00 00 01 JAN *")
     public void depreciarValorEquipos() {
-        System.out.println("Se depreciaron los equipos");
         List<Equipo> equipos = (List<Equipo>) equipoRepository.findAll();
         List<Equipo> equiposDepreciados = equipos.stream().map((equipo -> {
             double valorDepreciado = calcularValorDepreciado(equipo.getValorDepreciado(), equipo.getFechaCompra());
